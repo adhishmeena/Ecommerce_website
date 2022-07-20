@@ -12,6 +12,9 @@ router.get(
   "/",
   AysnHandler(async (req, res) => {
     const products = await Product.find({}); // mongoose method return promise
+    //   res.status(401);
+    //   throw new Error("Not Authorized");
+
     res.json(products);
   })
 );
