@@ -51,7 +51,7 @@ const HomeScreen = () => {
             (
               product //as this arrow function has one line so we can return it like this
             ) => (
-              <Col key={product._id} sm={12} md={8} lg={4} xl={3}>
+              <Col key={product._id} sm={12} md={8} lg={5} xl={3}>
                 {/* <img src={product.image} /> */}
                 <Product product={product} />
               </Col>

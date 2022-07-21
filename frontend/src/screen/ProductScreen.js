@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Row,
   Col,
@@ -8,6 +8,7 @@ import {
   Card,
   Button,
   ListGroupItem,
+  Form,
 } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,8 @@ import Message from "../Components/Message";
 
 const ProductScreen = () => {
   let params = useParams(); // use this to read link
+  let Nav = useNavigate();
+  const [Quantity, setQty] = useState(0);
 
   // const product = products.find((p) => p._id === params.id);
   const dispatch = useDispatch();
@@ -29,6 +32,7 @@ const ProductScreen = () => {
 
   useEffect(() => {
     //let params = useParams();
+
     dispatch(listproductDetails(params.id));
 
     // alert(JSON.stringify(params.id));
@@ -46,6 +50,10 @@ const ProductScreen = () => {
     // // calling fetchproducts function
     // fetchproduct();
   }, [dispatch]); // second parameter [] of useEffect is used to keep dependencies , It is genrally used when we want to fire useEffect on change of some values
+
+  const AddToCartHandler = () => {
+    Nav(`/cart/${params.id}?Quantity=${Quantity}`);
+  };
 
   return (
     <>
@@ -106,8 +114,36 @@ const ProductScreen = () => {
                   </Row>
                 </ListGroup.Item>
 
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Quantity</Col>
+
+                      <Col>
+                        <Form.Control
+                          as="select"
+                          value={Quantity}
+                          onChange={(event) => {
+                            return setQty(event.target.value);
+                          }}
+                        >
+                          {[...Array(product.countInStock).keys()].map((x) => {
+                            return (
+                              <option key={x + 1} value={x + 1}>
+                                {" "}
+                                {x + 1}{" "}
+                              </option>
+                            );
+                          })}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 <ListGroup.Item>
                   <Button
+                    onClick={AddToCartHandler}
                     className="btn-block"
                     type="button"
                     style={{ width: "100%" }}

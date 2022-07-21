@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import Footer from "./Components/Footer";
 import HomeScreen from "./screen/HomeScreen";
 import ProductScreen from "./screen/ProductScreen";
+import CartScreen from "./screen/CartScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
@@ -11,7 +12,7 @@ const App = () => {
     <Router>
       <Header />
       <main className="py-3">
-        <Container style={{ border: "2px solid black" }}>
+        <Container>
           {/* <h1> Welcome to OnlineStore</h1> */}
           <Routes>
             <Route path="/" element={<HomeScreen />} exact />
@@ -19,6 +20,7 @@ const App = () => {
             {/*  In
             product.js component we have given path in this way so that we use
             it in router `/product/${product._id}` */}
+            <Route path="/cart/:id?" element={<CartScreen />} />
           </Routes>
         </Container>
       </main>
