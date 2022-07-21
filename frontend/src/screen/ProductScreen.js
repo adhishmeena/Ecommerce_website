@@ -9,8 +9,12 @@ import {
   Button,
   ListGroupItem,
 } from "react-bootstrap";
+
+import { useDispatch, useSelector } from "react-redux";
 import Rating from "../Components/Rating";
-import axios from "axios";
+import { listproductDetails } from "../Actions/productActions";
+import Loader from "../Components/Loader";
+import Message from "../Components/Message";
 //import products from "../products";
 //import { useParams } from "react-router-dom";
 
@@ -18,23 +22,30 @@ const ProductScreen = () => {
   let params = useParams(); // use this to read link
 
   // const product = products.find((p) => p._id === params.id);
+  const dispatch = useDispatch();
 
-  const [product, setproduct] = useState({});
+  const ProductDetails = useSelector((state) => state.ProductDetails);
+  const { loading, error, product } = ProductDetails;
 
   useEffect(() => {
+    //let params = useParams();
+    dispatch(listproductDetails(params.id));
+
+    // alert(JSON.stringify(params.id));
+
     // useEffect is same as salesforce connected callback , It loads everytime when this page is loaded
 
     // axios.get("api/products"); // It returns promise so to handle it we are going to use async await https://javascript.info/async-await
     //    let params = useParams();
 
-    const fetchproduct = async () => {
-      // const res =  await axios.get("api/products");// this res has data variable , here I am using destructure
-      const { data } = await axios.get(`/api/products/${params.id}`); // after proxy this will behave as http://localhost:5000/api/products/1
-      setproduct(data);
-    };
-    // calling fetchproducts function
-    fetchproduct();
-  }, []); // second parameter [] of useEffect is used to keep dependencies , It is genrally used when we want to fire useEffect on change of some values
+    // const fetchproduct = async () => {
+    //   // const res =  await axios.get("api/products");// this res has data variable , here I am using destructure
+    //   const { data } = await axios.get(`/api/products/${params.id}`); // after proxy this will behave as http://localhost:5000/api/products/1
+    //   setproduct(data);
+    // };
+    // // calling fetchproducts function
+    // fetchproduct();
+  }, [dispatch]); // second parameter [] of useEffect is used to keep dependencies , It is genrally used when we want to fire useEffect on change of some values
 
   return (
     <>
@@ -42,69 +53,75 @@ const ProductScreen = () => {
         {" "}
         Go Back{" "}
       </Link>
-
-      <Row>
-        <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid />{" "}
-          {/*  // fluid will keep the image in container */}
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>{product.name}</ListGroup.Item>
-            <ListGroup.Item>
-              <Rating
-                value={product.rating}
-                text={`${product.numReviews} reviews`}
-              />
-            </ListGroup.Item>
-
-            <ListGroup.Item>Price : ${product.price}</ListGroup.Item>
-            <ListGroup.Item>
-              description : ${product.description}
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-
-        <Col md={3}>
-          <Card>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Row>
+          <Col md={6}>
+            <Image src={product.image} alt={product.name} fluid />{" "}
+            {/*  // fluid will keep the image in container */}
+          </Col>
+          <Col md={3}>
             <ListGroup variant="flush">
+              <ListGroup.Item>{product.name}</ListGroup.Item>
               <ListGroup.Item>
-                <Row>
-                  <Col>price</Col>
-                  <Col>
-                    <strong> ${product.price} </strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Status</Col>
-                  <Col>
-                    <strong>
-                      {" "}
-                      ${product.countInStock > 0
-                        ? "In Stock"
-                        : "Out of Stock"}{" "}
-                    </strong>
-                  </Col>
-                </Row>
+                <Rating
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                />
               </ListGroup.Item>
 
+              <ListGroup.Item>Price : ${product.price}</ListGroup.Item>
               <ListGroup.Item>
-                <Button
-                  className="btn-block"
-                  type="button"
-                  style={{ width: "100%" }}
-                  disabled={product.countInStock === 0}
-                  fluid
-                >
-                  Add to Cart
-                </Button>
+                description : ${product.description}
               </ListGroup.Item>
             </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+          </Col>
+
+          <Col md={3}>
+            <Card>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <Row>
+                    <Col>price</Col>
+                    <Col>
+                      <strong> ${product.price} </strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Status</Col>
+                    <Col>
+                      <strong>
+                        {" "}
+                        $
+                        {product.countInStock > 0
+                          ? "In Stock"
+                          : "Out of Stock"}{" "}
+                      </strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                  <Button
+                    className="btn-block"
+                    type="button"
+                    style={{ width: "100%" }}
+                    disabled={product.countInStock === 0}
+                    fluid
+                  >
+                    Add to Cart
+                  </Button>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

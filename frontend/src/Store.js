@@ -7,10 +7,14 @@ import {
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { ProductListReducer } from "./Reducers/ProductReducers";
+import {
+  ProductListReducer,
+  ProductDetailsReducer,
+} from "./Reducers/ProductReducers";
 
 const reducer = combineReducers({
   productList: ProductListReducer,
+  ProductDetails: ProductDetailsReducer,
 });
 
 const initialState = {};
