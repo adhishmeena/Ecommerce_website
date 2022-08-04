@@ -3,7 +3,7 @@ import { CART_ADD_ITEMS } from "../Constants/CartConstants";
 // we can use getState to get any state  (ex:- ProductDetails etc that we have mentioned in store.js )
 // react thunk allow to pass function within a function
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-  const { date } = await axios.get(`/api/products/${id}`);
+  const { data } = await axios.get(`/api/products/${id}`);
 
   dispatch({
     type: CART_ADD_ITEMS,

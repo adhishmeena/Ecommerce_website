@@ -22,7 +22,7 @@ import Message from "../Components/Message";
 const ProductScreen = () => {
   let params = useParams(); // use this to read link
   let Nav = useNavigate();
-  const [Quantity, setQty] = useState(0);
+  const [Quantity, setQty] = useState(1); // we want to set initial quantity to zero
 
   // const product = products.find((p) => p._id === params.id);
   const dispatch = useDispatch();
