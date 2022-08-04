@@ -20,7 +20,7 @@ const App = () => {
             {/*  In
             product.js component we have given path in this way so that we use
             it in router `/product/${product._id}` */}
-            <Route path="/cart/:id?" element={<CartScreen />} />
+            <Route path="/cart/:id" element={<CartScreen />} />
           </Routes>
         </Container>
       </main>
