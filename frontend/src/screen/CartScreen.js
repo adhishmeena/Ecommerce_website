@@ -11,7 +11,7 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { addToCart } from "../Actions/CartActions";
+import { addToCart, removeFromCart } from "../Actions/CartActions";
 
 const CartScreen = ({ history }) => {
   let params = useParams();
@@ -37,7 +37,7 @@ const CartScreen = ({ history }) => {
   // alert("inside");
 
   const removeFromCartHandler = (id) => {
-    console.log("remove");
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {

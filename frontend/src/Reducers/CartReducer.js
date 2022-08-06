@@ -1,4 +1,4 @@
-import { CART_ADD_ITEMS } from "../Constants/CartConstants";
+import { CART_ADD_ITEMS, CART_REMOVE_ITEMS } from "../Constants/CartConstants";
 
 import React from "react";
 
@@ -22,6 +22,13 @@ export const CartReducer = (state = { cartItems: [] }, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+
+    case CART_REMOVE_ITEMS:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter((x) => x.product !== action.payload), // it will return all the items which is not equal to delete items
+      };
+
     default:
       return state;
   }

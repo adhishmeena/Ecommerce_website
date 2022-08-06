@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CART_ADD_ITEMS } from "../Constants/CartConstants";
+import { CART_ADD_ITEMS, CART_REMOVE_ITEMS } from "../Constants/CartConstants";
 // we can use getState to get any state  (ex:- ProductDetails etc that we have mentioned in store.js )
 // react thunk allow to pass function within a function
 export const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -16,6 +16,15 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       countInStock: data.countInStock,
       qty,
     },
+  });
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const removeFromCart = (id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_REMOVE_ITEMS,
+    payload: id,
   });
 
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
