@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use((req, res, next) => {
   // this is the middleware , It is used between request response cycle . whenever we make call to api/products or api/products/id or any other routes then this middleware will be called
-  console.log("hello");
-  console.log(req.originalUrl);
+  // console.log("hello");
+  // console.log(req.originalUrl);
   next();
 });
 
