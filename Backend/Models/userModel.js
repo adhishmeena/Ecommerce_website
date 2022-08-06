@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
 const userSchema = mongoose.Schema(
   {
     user: {
@@ -31,6 +31,12 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+// this function is to check the password of user
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  // compare the plane text to encrypted password
+  return await bcrypt.compare(enteredPassword, this.password); // we call this method (matchPassword) on that specific user and then can access their password using this.password
+};
 
 const User = mongoose.model("User", userSchema);
 

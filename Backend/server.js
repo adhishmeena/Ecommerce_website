@@ -7,12 +7,16 @@ import connectDB from "./Config/DB.js";
 
 import { notfound, errorHandler } from "./Middleware/ErrorMiddleware.js";
 import ProductRoutes from "./Routes/ProductRoutes.js";
+import UserRoutes from "./Routes/UserRoutes.js";
+
 dotenv.config();
 
 connectDB();
 const app = express();
 
 const PORT = process.env.PORT || 5000;
+
+app.use(express.json()); // this will allow us to accept json data in body
 
 app.use((req, res, next) => {
   // this is the middleware , It is used between request response cycle . whenever we make call to api/products or api/products/id or any other routes then this middleware will be called
@@ -32,8 +36,8 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use("/api/products", ProductRoutes);
-
+app.use("/api/products", ProductRoutes); // mounting ProductRoutes on certain api
+app.use("/api/users", UserRoutes);
 app.use(notfound);
 
 app.use(errorHandler); //As this error middleware should replace the html error msg of above route so It should be placed below it.
