@@ -27,6 +27,40 @@ const authUser = AsyncHandler(async (req, res) => {
   }
 });
 
+// @description Register a new User
+//@Route        POST /api/users
+//@access       public
+const RegisterUser = AsyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  /// res.send({ email, password }); checking with postman that we can access this data from request.body
+  const userExists = await User.findOne({ email }); // this will find the password
+  // now we need to make sure that password should also match
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  //Here it is plane text so we will use some moongoose middleware to encrypt it
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid User data");
+  }
+});
+
 // @description Get User Profile
 //@Route        GET /api/users/profile
 //@access       private
@@ -47,4 +81,4 @@ const getUserProfile = AsyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile };
+export { authUser, getUserProfile, RegisterUser };
