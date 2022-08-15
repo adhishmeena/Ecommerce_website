@@ -24,7 +24,7 @@ const importData = async () => {
     const adminUser = createdUsers[0]._id;
 
     const sampleProducts = products.map((product) => {
-      return { ...product, user: adminUser };
+      return { ...product, user: adminUser }; // we are inserting all data in database using admin id or admin is the owner of this product
     });
 
     await Product.insertMany(sampleProducts);
